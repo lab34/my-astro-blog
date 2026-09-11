@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatReadingTime, readingTime } from '../lib/readingTime';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, description, pubDate } = post.data;
+
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<article
+  class="group rounded-xl border border-neutral-200 p-5 transition-colors hover:border-neutral-400 dark:border-neutral-800 dark:hover:border-neutral-600"
+>
+  <a href={`/blog/${post.id}`} class="block">
+    <h3 class="text-lg font-semibold group-hover:underline">{title}</h3>
+    <p class="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+      <time datetime={pubDate.toISOString()}>{dateFormatter.format(pubDate)}</time>
+      <span aria-hidden="true"> · </span>
+      {formatReadingTime(readingTime(post.body ?? ''))}
+    </p>
+    <p class="mt-2 text-neutral-700 dark:text-neutral-300">{description}</p>
+  </a>
+</article>

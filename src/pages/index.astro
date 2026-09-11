@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const posts = (await getCollection('blog')).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="My Astro Blog — Hello World">
+  <section class="mb-12">
+    <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl">Hello World 👋</h1>
+    <p class="mt-4 text-lg text-neutral-600 dark:text-neutral-400">
+      Un blog prototype <strong>ultra-léger</strong>, construit avec
+      <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="underline decoration-dotted hover:text-neutral-900 dark:hover:text-white">Astro</a>
+      et <a href="https://tailwindcss.com" target="_blank" rel="noopener noreferrer" class="underline decoration-dotted hover:text-neutral-900 dark:hover:text-white">Tailwind CSS</a>,
+      généré en statique et déployé sur
+      <a href="https://pages.cloudflare.com" target="_blank" rel="noopener noreferrer" class="underline decoration-dotted hover:text-neutral-900 dark:hover:text-white">Cloudflare Pages</a>.
+      Il sert à tester la chaîne de déploiement continu de bout en bout.
+    </p>
+  </section>
+
+  <section aria-labelledby="recent-posts">
+    <h2 id="recent-posts" class="text-xl font-bold tracking-tight">Articles récents</h2>
+    <div class="mt-4 flex flex-col gap-4">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>
